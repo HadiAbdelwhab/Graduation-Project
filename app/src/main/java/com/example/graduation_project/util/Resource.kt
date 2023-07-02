@@ -1,11 +1,13 @@
 package com.example.graduation_project.util
 
-sealed class Resource<T>(
-    val data: T? = null,
-    val massage: String? = null
-) {
+import okhttp3.ResponseBody
 
-    class Success<T>(data: T) : Resource<T>(data)
-    class Error<T>(massage: String, data: T? = null) : Resource<T>(data, massage)
-    class Loading<T> : Resource<T>()
+sealed class Resource<out T>{
+
+    data class Success<out T>(val value:T) : Resource<T>()
+    data class Failure(
+        val isNetworkError:Boolean,
+        val errorCode:Int,
+        val errorBody:ResponseBody?
+    )
 }

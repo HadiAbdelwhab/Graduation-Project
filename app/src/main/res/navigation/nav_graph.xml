@@ -30,9 +30,9 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.graduation_project.ui.patientrecords.PatientsRecordsFragment"
+        android:name="com.example.graduation_project.ui.patientrecords.PatientsListFragment"
         android:label="DashboardFragment"
-        tools:layout="@layout/fragment_patients_records" />
+        tools:layout="@layout/fragment_patients_list" />
 
 
 </navigation>

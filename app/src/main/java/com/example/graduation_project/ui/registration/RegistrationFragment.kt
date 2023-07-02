@@ -6,4 +6,6 @@ import com.example.graduation_project.R
 class RegistrationFragment:Fragment(R.layout.fragment_registration) {
 
 
+
+
 }

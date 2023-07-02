@@ -6,29 +6,41 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.graduation_project.api.BasicAuthorization
 import com.example.graduation_project.models.loginmodel.LoginResponse
-import com.example.graduation_project.repository.UserRepository
+import com.example.graduation_project.repository.MainRepository
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val userRepo = UserRepository()
+    private val userRepo = MainRepository()
     private val loginResult: MutableLiveData<LoginResponse> = MutableLiveData()
 
-    suspend fun loginUser(userName: String, password: String): Result<LoginResponse?> {
+    fun loginUser(
+        userName: String,
+        password: String,
+        onResult: (Result<LoginResponse?>) -> Unit
+    ) {
         val basicAuthorization = BasicAuthorization(userName, password)
         val credentials = basicAuthorization.getCredentials()
 
-        return withContext(viewModelScope.coroutineContext) {
+        viewModelScope.launch {
             try {
                 val response = userRepo.loginUser(credentials)
-                if (response?.code() == 200) {
-                    Result.success(response.body())
+                if (response.code() == 200) {
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        loginResult.postValue(loginResponse)
+                        onResult(Result.success(response.body()))
+                    } else {
+                        onResult(Result.failure(Exception("Login response is null")))
+                    }
                 } else {
-                    Result.failure(Exception("Login failed"))
+                    onResult(Result.failure(Exception("Login failed")))
                 }
             } catch (e: Exception) {
-                Result.failure(e)
+                onResult(Result.failure(e))
             }
         }
     }
+
 
 }

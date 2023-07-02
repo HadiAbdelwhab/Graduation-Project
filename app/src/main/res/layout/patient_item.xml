@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/textName"
+            android:id="@+id/text_view_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Patient Name"
@@ -23,7 +23,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textAge"
+            android:id="@+id/text_view_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Age"
@@ -33,7 +33,7 @@
             />
 
         <TextView
-            android:id="@+id/textGender"
+            android:id="@+id/text_view_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="gender"

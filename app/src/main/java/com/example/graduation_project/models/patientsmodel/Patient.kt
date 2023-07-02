@@ -3,7 +3,7 @@ package com.example.graduation_project.models.patientsmodel
 
 import com.google.gson.annotations.SerializedName
 
-data class PatientData(
+data class Patient(
     @SerializedName("birth_date")
     val birthDate: String,
     @SerializedName("created_at")

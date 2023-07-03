@@ -1,6 +1,7 @@
 package com.example.graduation_project.di
 
 import com.example.graduation_project.api.ApiService
+import com.example.graduation_project.util.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,14 +17,12 @@ class RetrofitModule {
     @Singleton
     fun provideApiService(): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl(Companion.BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(ApiService::class.java)
     }
 
-    companion object {
-        private const val BASE_URL="http://10.0.2.2:8000/"
-    }
+
 
 }

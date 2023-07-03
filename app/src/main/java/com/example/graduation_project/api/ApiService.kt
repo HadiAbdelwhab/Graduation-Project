@@ -2,7 +2,9 @@ package com.example.graduation_project.api
 
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.models.loginmodel.LoginResponse
+import com.example.graduation_project.models.patienthistorymodel.PatientHistoryResponse
 import com.example.graduation_project.models.patientsmodel.PatientResponse
+import com.example.graduation_project.models.registermodel.RegistrationRequest
 import com.example.graduation_project.models.registermodel.RegistrationResponse
 import retrofit2.Response
 import retrofit2.http.*
@@ -16,21 +18,19 @@ interface ApiService {
 
     @POST("api/signup")
     suspend fun register(
-        @Header("Authorization") credentials: String
+       @Body request: RegistrationRequest
     ): Response<RegistrationResponse>
 
 
-    @GET("api/patients")
+    @GET("api/patients/")
     suspend fun getPatientList(
-        @Header("Authorization") token: String
+        @Header("Authentication") token: String
     ): Response<PatientResponse>
 
+    @GET("api/patient-history/{id}")
+    suspend fun getPatientHistory(
+        @Path("id") id: String
+    ): Response<PatientHistoryResponse>
 }
 
-
-/*@GET("api/patient-history/{$id}")
-suspend fun getPatientHistory*/
-
-/*@GET("api/patients/")
-suspend fun getPatients():Response<PatientsResponse>*/
 

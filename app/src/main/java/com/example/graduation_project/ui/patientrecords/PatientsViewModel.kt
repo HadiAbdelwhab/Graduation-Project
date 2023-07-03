@@ -1,7 +1,6 @@
 package com.example.graduation_project.ui.patientrecords
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,20 +19,21 @@ class PatientsViewModel @Inject constructor(
     private val _getPatientsList: MutableLiveData<List<Patient>> = MutableLiveData()
     val getPatientsList: MutableLiveData<List<Patient>> get() = _getPatientsList
 
-    fun getPatientsList(token:String) {
+    fun getPatientsList(token: String) {
         viewModelScope.launch {
             try {
-                val response =
-                    repository.getPatientsList(token)
-                val list = response.body()?.patients
-                _getPatientsList.postValue(list)
+                val response = repository.getPatientsList("Bearer $token")
+                Log.d("PatientsViewModel","Bearer $token")
+                if (response.isSuccessful) {
+                    val patientResponse = response.body()
+                    val list = patientResponse?.patients
+                    _getPatientsList.postValue(list)
+                } else {
+                }
             } catch (e: Exception) {
-
+                // Handle network or other errors
             }
-
-
         }
     }
-
 
 }

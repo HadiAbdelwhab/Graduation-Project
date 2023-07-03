@@ -15,6 +15,8 @@ import com.example.graduation_project.R
 import com.example.graduation_project.databinding.FragmentLogInBinding
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.ui.MainActivity
+import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
+import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 
 
 class LoginFragment : Fragment(R.layout.fragment_log_in) {
@@ -43,10 +45,15 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.registerFragmentTextView.setOnClickListener {
+            val navController = Navigation.findNavController(requireView())
+            navController.navigate(R.id.action_loginFragment_to_registrationFragment)
+
+        }
 
         loginViewModel=(activity as MainActivity).loginViewModel
         sharedPreferences =
-            requireActivity().getSharedPreferences("your_app_shared_prefs", Context.MODE_PRIVATE)
+            requireActivity().getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
 
         binding.loginButton.setOnClickListener {
             val userName = binding.loginUsernameEditText.text.toString()
@@ -62,10 +69,12 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
             // Handle the login response
 
             if (loginResponse != null) {
-                Toast.makeText(context, "not null", Toast.LENGTH_LONG).show()
+
                 val token = loginResponse.access
                 saveTokenToSharedPreferences(token)
+                Toast.makeText(context, "not null + $token", Toast.LENGTH_LONG).show()
                 navigateToPatientsListFragment()
+
             } else {
                 Toast.makeText(context, "JJJJJJ", Toast.LENGTH_LONG).show()
             }
@@ -73,7 +82,7 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
     }
 
     private fun saveTokenToSharedPreferences(token: String) {
-        sharedPreferences.edit().putString("token", token).apply()
+        sharedPreferences.edit().putString(TOKEN_KEY, token).apply()
     }
 
     private fun navigateToPatientsListFragment() {

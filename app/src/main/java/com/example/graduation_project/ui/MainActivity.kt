@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.graduation_project.R
 import com.example.graduation_project.ui.login.LoginViewModel
 import com.example.graduation_project.ui.patientrecords.PatientsViewModel
+import com.example.graduation_project.ui.registration.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    lateinit var registerViewModel:RegistrationViewModel
     lateinit var loginViewModel: LoginViewModel
     lateinit var patientsViewModel: PatientsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,5 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         loginViewModel=ViewModelProvider(this)[LoginViewModel::class.java]
         patientsViewModel= ViewModelProvider(this)[PatientsViewModel::class.java]
+        registerViewModel=ViewModelProvider(this)[RegistrationViewModel::class.java]
     }
 }

@@ -15,6 +15,7 @@ import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
 import com.example.graduation_project.models.patientsmodel.Patient
+import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 
 class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
 
@@ -30,7 +31,6 @@ class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPatientsListBinding.inflate(inflater, container, false)
-        sharedPreferences = requireActivity().getSharedPreferences("your_app_shared_prefs", Context.MODE_PRIVATE)
 
         return binding.root
     }
@@ -43,15 +43,19 @@ class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
 
         patientsViewModel=(activity as MainActivity).patientsViewModel
 
-        val token = sharedPreferences.getString("token", "")
+        val token = sharedPreferences.getString(TOKEN_KEY, null)
+
         if (token != null) {
             patientsViewModel.getPatientsList(token)
+
         }
 
         patientsViewModel.getPatientsList.observe(viewLifecycleOwner, Observer { patients ->
             patients?.let {
-                Log.d("patients",it.toString())
+
                 patientsAdapter.updateData(it)
+                //Log.d("PatientsListFragment",it.toString())
+
             }
         })
 

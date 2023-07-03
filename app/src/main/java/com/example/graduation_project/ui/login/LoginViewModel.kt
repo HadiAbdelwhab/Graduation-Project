@@ -14,6 +14,9 @@ import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.graduation_project.models.loginmodel.LoginRequest
+import com.example.graduation_project.util.Constants
+import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
+import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -25,7 +28,7 @@ class LoginViewModel @Inject constructor(
 
     val loginResult: MutableLiveData<LoginResponse> = MutableLiveData()
     private val sharedPreferences: SharedPreferences =
-        application.getSharedPreferences("your_app_shared_prefs", Context.MODE_PRIVATE)
+        application.getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
 
     fun loginUser(loginRequest: LoginRequest) {
         viewModelScope.launch {
@@ -36,9 +39,7 @@ class LoginViewModel @Inject constructor(
                     if (loginResponse != null) {
                         saveToken(loginResponse.access)
                         loginResult.postValue(loginResponse)
-                        // Handle successful login, navigate to the dashboard, etc.
                     } else {
-                        // Handle null login response
                     }
                 } else {
                     // Handle login failure
@@ -50,7 +51,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun saveToken(token: String) {
-        sharedPreferences.edit().putString("token", token).apply()
+        sharedPreferences.edit().putString(TOKEN_KEY, token).apply()
     }
 }
 

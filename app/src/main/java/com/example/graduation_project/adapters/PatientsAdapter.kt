@@ -17,7 +17,7 @@ class PatientsAdapter(
         private val ageTextView: TextView = itemView.findViewById<TextView?>(R.id.text_view_age)
 
         fun bind(patient: Patient) {
-            nameTextView.text = patient.firstName + patient.lastName
+            nameTextView.text = {"${patient.firstName} ${patient.lastName}" }.toString()
             ageTextView.text=patient.birthDate
             genderTextView.text=patient.gender.toString()
 
@@ -31,7 +31,7 @@ class PatientsAdapter(
         viewType: Int
     ): PatientsAdapter.PatientsViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.patient_item, parent, false)
+            .inflate(R.layout.item_patient, parent, false)
         return PatientsViewHolder(itemView)
     }
 

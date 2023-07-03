@@ -49,13 +49,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_eye" />
+
         <ImageView
-            android:layout_marginTop="8dp"
+            android:id="@+id/mask_image_view"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_ratio"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_ratio" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
 import com.example.graduation_project.models.patientsmodel.Patient
+import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
 import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 
 class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
@@ -38,6 +39,7 @@ class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sharedPreferences = requireActivity().getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
 
         setUpRecyclerView()
 

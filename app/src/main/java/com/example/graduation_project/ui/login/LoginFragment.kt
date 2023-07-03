@@ -12,11 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.graduation_project.R
+import com.example.graduation_project.api.TokenManager
 import com.example.graduation_project.databinding.FragmentLogInBinding
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.ui.MainActivity
 import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
 import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
+import javax.inject.Inject
 
 
 class LoginFragment : Fragment(R.layout.fragment_log_in) {
@@ -25,6 +27,9 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
 
     override fun onCreateView(
@@ -71,7 +76,8 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
             if (loginResponse != null) {
 
                 val token = loginResponse.access
-                saveTokenToSharedPreferences(token)
+                //saveTokenToSharedPreferences(token)
+                tokenManager.saveToken(token)
                 Toast.makeText(context, "not null + $token", Toast.LENGTH_LONG).show()
                 navigateToPatientsListFragment()
 

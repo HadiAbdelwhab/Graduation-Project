@@ -8,17 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.graduation_project.R
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentLogInBinding
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.ui.MainActivity
 import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
-import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
-import javax.inject.Inject
+
 
 
 class LoginFragment : Fragment(R.layout.fragment_log_in) {
@@ -89,9 +86,7 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
         }
     }
 
-    private fun saveTokenToSharedPreferences(token: String) {
-        sharedPreferences.edit().putString(TOKEN_KEY, token).apply()
-    }
+
 
     private fun navigateToPatientsListFragment() {
         val navController = Navigation.findNavController(requireView())

@@ -23,20 +23,33 @@
         android:id="@+id/registrationFragment"
         android:name="com.example.graduation_project.ui.registration.RegistrationFragment"
         android:label="fragment_registration"
-        tools:layout="@layout/fragment_registration" >
+        tools:layout="@layout/fragment_registration">
         <action
             android:id="@+id/action_registrationFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 
 
-
-
     <fragment
-        android:id="@+id/dashboardFragment"
+            android:id="@+id/dashboardFragment"
         android:name="com.example.graduation_project.ui.patientrecords.PatientsListFragment"
         android:label="DashboardFragment"
-        tools:layout="@layout/fragment_patients_list" />
+        tools:layout="@layout/fragment_patients_list" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_patientHistoryFragment"
+            app:destination="@id/patientHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/patientHistoryFragment"
+        android:name="com.example.graduation_project.ui.patienthistory.PatientHistoryFragment"
+        android:label="PatientHistoryFragment"
+        tools:layout="@layout/fragment_patient_history" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="4"
+            />
+    </fragment>
 
 
 </navigation>

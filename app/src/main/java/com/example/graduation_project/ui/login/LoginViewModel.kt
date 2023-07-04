@@ -18,13 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val application: Application,
     private val userRepo: MainRepository
 ) : ViewModel() {
 
     val loginResult: MutableLiveData<LoginResponse> = MutableLiveData()
-    private val sharedPreferences: SharedPreferences =
-        application.getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
+
 
     fun loginUser(loginRequest: LoginRequest) {
         viewModelScope.launch {
@@ -33,7 +31,7 @@ class LoginViewModel @Inject constructor(
                 if (response.code() == 200) {
                     val loginResponse = response.body()
                     if (loginResponse != null) {
-                        saveToken(loginResponse.access)
+
                         loginResult.postValue(loginResponse)
                     } else {
                     }
@@ -46,9 +44,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun saveToken(token: String) {
-        sharedPreferences.edit().putString(TOKEN_KEY, token).apply()
-    }
+
 }
 
 

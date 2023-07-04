@@ -83,4 +83,8 @@ dependencies {
     def okhttp_version = "4.10.0"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    //navArgs
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.0"
+
 }

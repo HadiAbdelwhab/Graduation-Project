@@ -8,6 +8,7 @@ class Constants {
         const val TOKEN_KEY="token"
         const val USER_TOKEN="user_token"
         const val PREFS_TOKEN_FILE="PREFS_TOKEN_FILE"
+        const val PATIENT_ID="patient_id"
 
 
     }

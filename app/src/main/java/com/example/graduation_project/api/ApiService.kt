@@ -1,5 +1,7 @@
 package com.example.graduation_project.api
 
+import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientRequest
+import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientResponse
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.models.loginmodel.LoginResponse
 import com.example.graduation_project.models.patienthistorymodel.PatientHistoryResponse
@@ -27,10 +29,18 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<PatientResponse>
 
+    @POST("api/patients/")
+    suspend fun createNewPatient(
+        @Header("Authorization") token: String,
+        @Body createNewPatientRequest: CreateNewPatientRequest
+    ):Response<CreateNewPatientResponse>
+
     @GET("api/patient-history/{id}")
     suspend fun getPatientHistory(
-        @Path("id") id: String
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
     ): Response<PatientHistoryResponse>
+
 }
 
 

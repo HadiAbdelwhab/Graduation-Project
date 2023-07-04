@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.graduation_project.R
 import com.example.graduation_project.models.patienthistorymodel.PatientHistory
+import com.example.graduation_project.models.patientsmodel.Patient
 
 class PatientsHistoryAdapter(
     private var patientsHistory: List<PatientHistory>
@@ -50,6 +51,11 @@ class PatientsHistoryAdapter(
     override fun onBindViewHolder(holder: PatientHistoryViewHolder, position: Int) {
         holder.bind(patientsHistory[position])
     }
+    fun updateData(newPatientsHistoryList: List<PatientHistory>) {
+        patientsHistory = newPatientsHistoryList
+        notifyDataSetChanged()
+    }
+
 
 
 }

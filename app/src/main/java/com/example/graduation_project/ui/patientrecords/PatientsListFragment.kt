@@ -13,18 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.graduation_project.ui.MainActivity
 import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
+import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
 import com.example.graduation_project.models.patientsmodel.Patient
 import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
 import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 
-class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
+class PatientsListFragment : Fragment(R.layout.fragment_patients_list) {
 
     private var _binding: FragmentPatientsListBinding? = null
     private val binding get() = _binding!!
     lateinit var patientsViewModel: PatientsViewModel
     private lateinit var patientsAdapter: PatientsAdapter
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,25 +40,24 @@ class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sessionManager = SessionManager(requireContext())
 
-        sharedPreferences = requireActivity().getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireActivity().getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
 
         setUpRecyclerView()
 
-        patientsViewModel=(activity as MainActivity).patientsViewModel
+        patientsViewModel = (activity as MainActivity).patientsViewModel
 
-        val token = sharedPreferences.getString(TOKEN_KEY, null)
 
+        val token = sessionManager.fetchAuthToken()
         if (token != null) {
             patientsViewModel.getPatientsList(token)
-
         }
-
         patientsViewModel.getPatientsList.observe(viewLifecycleOwner, Observer { patients ->
             patients?.let {
 
                 patientsAdapter.updateData(it)
-                //Log.d("PatientsListFragment",it.toString())
 
             }
         })
@@ -64,7 +65,7 @@ class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
     }
 
     private fun setUpRecyclerView() {
-        patientsAdapter= PatientsAdapter(emptyList())
+        patientsAdapter = PatientsAdapter(emptyList())
         binding.patientsListRecyclerView.apply {
             adapter = patientsAdapter
             layoutManager = LinearLayoutManager(activity)
@@ -74,6 +75,6 @@ class PatientsListFragment:Fragment(R.layout.fragment_patients_list) {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=null
+        _binding = null
     }
 }

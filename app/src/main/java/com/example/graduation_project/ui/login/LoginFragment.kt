@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.graduation_project.R
-import com.example.graduation_project.api.TokenManager
+import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentLogInBinding
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.ui.MainActivity
@@ -27,9 +27,9 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sessionManager: SessionManager
 
-    @Inject
-    lateinit var tokenManager: TokenManager
+
 
 
     override fun onCreateView(
@@ -38,6 +38,7 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLogInBinding.inflate(inflater, container, false)
+        sessionManager = SessionManager(requireContext())
 
         return binding.root
     }
@@ -77,7 +78,8 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
 
                 val token = loginResponse.access
                 //saveTokenToSharedPreferences(token)
-                tokenManager.saveToken(token)
+                sessionManager.saveAuthToken(token)
+
                 Toast.makeText(context, "not null + $token", Toast.LENGTH_LONG).show()
                 navigateToPatientsListFragment()
 
@@ -97,31 +99,3 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
     }
 }
 
-//val navController = Navigation.findNavController(requireView())
-//navController.navigate(R.id.action_homeFragment_to_favouriteFragment)
-/*private fun handleLoginResult(result: Result<LoginResponse?>) {
-    if (result.isSuccess) {
-        // Login success
-        val loginResponse = result.getOrNull() // Get the login response object
-        // Perform further actions based on the login response
-
-        // Example: Accessing the result items
-        val resultItems = loginResponse?.results
-        resultItems?.forEach { resultItem ->
-            // Access individual result item properties (e.g., id, eye, result, etc.)
-            val id = resultItem.id
-            val eye = resultItem.eye
-            val result = resultItem.result
-            // Handle other properties as needed
-        }
-
-        // Navigate to the DashboardFragment and pass the login response as an argument
-        val navController = Navigation.findNavController(requireView())
-        val action = LoginFragmentDirections.actionLoginFragmentToDashboardFragment()
-        navController.navigate(action)
-    } else {
-        // Login failure
-        val errorMessage = result.exceptionOrNull()?.message // Get the error message
-        // Handle the login failure (display error message, show error dialog, etc.)
-    }
-}*/

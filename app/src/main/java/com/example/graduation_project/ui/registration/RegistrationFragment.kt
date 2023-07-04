@@ -66,8 +66,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
             if (registerionResponse != null) {
 
-                //val token = loginResponse.access
-                //saveTokenToSharedPreferences(token)
+
                 Toast.makeText(context, "Registration Succeeded ", Toast.LENGTH_LONG).show()
                 navigateToLoginFragment()
 

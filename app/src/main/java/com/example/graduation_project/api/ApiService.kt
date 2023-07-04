@@ -24,7 +24,7 @@ interface ApiService {
 
     @GET("api/patients/")
     suspend fun getPatientList(
-        @Header("Authentication") token: String
+        @Header("Authorization") token: String
     ): Response<PatientResponse>
 
     @GET("api/patient-history/{id}")

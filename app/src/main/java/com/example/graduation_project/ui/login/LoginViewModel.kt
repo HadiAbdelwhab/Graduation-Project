@@ -1,20 +1,16 @@
 package com.example.graduation_project.ui.login
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.graduation_project.api.BasicAuthorization
 import com.example.graduation_project.models.loginmodel.LoginResponse
 import com.example.graduation_project.repository.MainRepository
 import kotlinx.coroutines.launch
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.example.graduation_project.models.loginmodel.LoginRequest
-import com.example.graduation_project.util.Constants
 import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
 import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -35,8 +35,15 @@ class PatientsAdapter(
 
         fun bind(patient: Patient) {
             nameTextView.text = "${patient.firstName} ${patient.lastName}"
-            ageTextView.text = patient.birthDate
-            genderTextView.text = patient.gender.toString()
+
+
+            if (patient.gender == 1) {
+                genderTextView.text = "Male"
+            } else {
+                ageTextView.text = "Female"
+            }
+
+            ageTextView.text = patient.birthDate.toString()
         }
     }
 

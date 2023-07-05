@@ -1,8 +1,8 @@
 package com.example.graduation_project.repository
 
 import com.example.graduation_project.api.ApiService
-import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientRequest
-import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientResponse
+import com.example.graduation_project.models.loginmodel.createnewpatientmodel.CreateNewPatientRequest
+import com.example.graduation_project.models.loginmodel.createnewpatientmodel.CreateNewPatientResponse
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.models.loginmodel.LoginResponse
 import com.example.graduation_project.models.patienthistorymodel.PatientHistory
@@ -38,12 +38,16 @@ class MainRepository @Inject constructor(
         token: String,
         id: Int
     ): Response<PatientHistoryResponse> =
-        apiService.getPatientHistory(token, id)
+        apiService.getPatientHistory(
+            token = token, id = id
+        )
 
     suspend fun createNewPatient(
         createNewPatientRequest: CreateNewPatientRequest,
         token: String
     ): Response<CreateNewPatientResponse> =
-        apiService.createNewPatient(token, createNewPatientRequest)
+        apiService.createNewPatient(
+            token = token, createNewPatientRequest = createNewPatientRequest
+        )
 
 }

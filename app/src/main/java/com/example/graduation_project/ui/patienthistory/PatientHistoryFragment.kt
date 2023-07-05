@@ -1,6 +1,7 @@
 package com.example.graduation_project.ui.patienthistory
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientHistoryBinding
 import com.example.graduation_project.models.patienthistorymodel.PatientHistory
 import com.example.graduation_project.ui.MainActivity
+import com.example.graduation_project.util.Constants.Companion.PATIENT_ID
 
 class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
 
@@ -38,22 +40,28 @@ class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sessionManager = SessionManager((requireContext()))
-        val id = arg.id
 
-        setUpRecyclerView()
 
         patientHistoryViewModel = (activity as MainActivity).patientHistoryViewModel
-        val token=sessionManager.fetchAuthToken()
 
+        sessionManager = SessionManager((requireContext()))
+
+
+        val id = requireArguments().getInt(PATIENT_ID)
+        val token=sessionManager.fetchAuthToken()
 
         if (token != null) {
             patientHistoryViewModel.getPatientHistory(token,id)
         }
 
+        setUpRecyclerView()
+       Log.d("PatientHistoryFragment","$id token =$token")
+
+
         patientHistoryViewModel.patientHistoryResult.observe(viewLifecycleOwner, Observer {
 
             patientHistoryAdapter.updateData(it as List<PatientHistory>)
+            Log.d("PatientHistoryFragment",it.toString())
         })
 
     }

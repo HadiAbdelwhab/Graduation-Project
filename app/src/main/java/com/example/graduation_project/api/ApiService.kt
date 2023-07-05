@@ -1,7 +1,7 @@
 package com.example.graduation_project.api
 
-import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientRequest
-import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientResponse
+import com.example.graduation_project.models.loginmodel.createnewpatientmodel.CreateNewPatientRequest
+import com.example.graduation_project.models.loginmodel.createnewpatientmodel.CreateNewPatientResponse
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.models.loginmodel.LoginResponse
 import com.example.graduation_project.models.patienthistorymodel.PatientHistoryResponse

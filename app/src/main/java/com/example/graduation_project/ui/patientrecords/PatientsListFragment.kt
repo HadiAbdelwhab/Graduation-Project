@@ -1,15 +1,13 @@
 package com.example.graduation_project.ui.patientrecords
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.graduation_project.ui.MainActivity
@@ -17,10 +15,7 @@ import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
-import com.example.graduation_project.models.patientsmodel.Patient
 import com.example.graduation_project.util.Constants.Companion.PATIENT_ID
-import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
-import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 
 class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     PatientsAdapter.OnPatientClickListener {
@@ -74,12 +69,34 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         }
     }
 
-    private fun navigateToPatientsHistoryFragment(patientId: Int) {
-        val bundle=Bundle().putSerializable(PATIENT_ID,patientId)
+    private fun navigateToPatientsHistoryFragment(patientId: Int?) {
+        val bundle = Bundle().apply {
+            if (patientId != null) {
+                putInt(PATIENT_ID, patientId)
+                Log.d("PatientsListFragment",patientId.toString())
+                Toast.makeText(context,"$patientId",Toast.LENGTH_LONG).show()
+
+            }
+        }
         findNavController().navigate(
-            R.id.action_dashboardFragment_to_patientHistoryFragment
+            R.id.action_dashboardFragment_to_patientHistoryFragment,
+            bundle
         )
     }
+    /*private fun navigateToPatientsHistoryFragment(patientId: Int?) {
+        patientId?.let {
+            val bundle = Bundle().apply {
+                putInt(PATIENT_ID, it)
+                Log.d("PatientsListFragment",patientId.toString())
+            }
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_patientHistoryFragment,
+                bundle
+            )
+        }
+    }*/
+
+
 
 
     override fun onDestroy() {
@@ -88,9 +105,8 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     }
 
     override fun onPatientClick(patientId: Int) {
-        // Handle the patient click event here
-        // You can access the patient ID and perform any necessary actions
-        // Example: navigate to a patient details fragment with the ID
+
         navigateToPatientsHistoryFragment(patientId)
+        Log.d("PatientsListFragment",patientId.toString())
     }
 }

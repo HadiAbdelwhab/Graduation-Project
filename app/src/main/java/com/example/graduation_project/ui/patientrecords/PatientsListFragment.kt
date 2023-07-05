@@ -9,13 +9,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.graduation_project.ui.MainActivity
 import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
 import com.example.graduation_project.util.Constants.Companion.PATIENT_ID
+import com.google.android.material.snackbar.Snackbar
 
 class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     PatientsAdapter.OnPatientClickListener {
@@ -39,21 +42,27 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         super.onViewCreated(view, savedInstanceState)
         sessionManager = SessionManager(requireContext())
 
-
-        setUpRecyclerView()
-        patientsAdapter.setOnPatientClickListener(this)
-
         patientsViewModel = (activity as MainActivity).patientsViewModel
 
+        setUpRecyclerView()
+
+        patientsAdapter.setOnPatientClickListener(this)
 
         val token = sessionManager.fetchAuthToken()
+
         if (token != null) {
             patientsViewModel.getPatientsList(token)
+            setupSwipe(token)
         }
+
+
+
+
+
         patientsViewModel.getPatientsList.observe(viewLifecycleOwner, Observer { patients ->
             patients?.let {
 
-                patientsAdapter.updateData(it)
+                patientsAdapter.diifer.submitList(it)
 
             }
         })
@@ -62,7 +71,7 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     }
 
     private fun setUpRecyclerView() {
-        patientsAdapter = PatientsAdapter(emptyList())
+        patientsAdapter = PatientsAdapter()
         binding.patientsListRecyclerView.apply {
             adapter = patientsAdapter
             layoutManager = LinearLayoutManager(activity)
@@ -73,8 +82,8 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         val bundle = Bundle().apply {
             if (patientId != null) {
                 putInt(PATIENT_ID, patientId)
-                Log.d("PatientsListFragment",patientId.toString())
-                Toast.makeText(context,"$patientId",Toast.LENGTH_LONG).show()
+                Log.d("PatientsListFragment", patientId.toString())
+                Toast.makeText(context, "$patientId", Toast.LENGTH_LONG).show()
 
             }
         }
@@ -83,30 +92,43 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
             bundle
         )
     }
-    /*private fun navigateToPatientsHistoryFragment(patientId: Int?) {
-        patientId?.let {
-            val bundle = Bundle().apply {
-                putInt(PATIENT_ID, it)
-                Log.d("PatientsListFragment",patientId.toString())
+
+    private fun setupSwipe(toke: String) {
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
             }
-            findNavController().navigate(
-                R.id.action_dashboardFragment_to_patientHistoryFragment,
-                bundle
-            )
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val swipedPatientPosition = viewHolder.adapterPosition
+                val swipedPatient = patientsAdapter.diifer.currentList[swipedPatientPosition]
+                patientsViewModel.deletePatient(swipedPatient.id, toke)
+                Toast.makeText(context, "Patient deleted!", Toast.LENGTH_SHORT).show()
+
+            }
+
         }
-    }*/
 
 
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(binding.patientsListRecyclerView)
 
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+
+
     }
 
     override fun onPatientClick(patientId: Int) {
 
         navigateToPatientsHistoryFragment(patientId)
-        Log.d("PatientsListFragment",patientId.toString())
+        Log.d("PatientsListFragment", patientId.toString())
     }
 }

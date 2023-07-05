@@ -14,7 +14,7 @@ import javax.inject.Inject
 class PatientsViewModel @Inject constructor(
 
     private val repository: MainRepository
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _getPatientsList: MutableLiveData<List<Patient>> = MutableLiveData()
     val getPatientsList: MutableLiveData<List<Patient>> get() = _getPatientsList
@@ -23,7 +23,7 @@ class PatientsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = repository.getPatientsList("Bearer $token")
-                Log.d("PatientsViewModel","Bearer $token")
+                Log.d("PatientsViewModel", "Bearer $token")
                 if (response.isSuccessful) {
                     val patientResponse = response.body()
                     val list = patientResponse?.patients
@@ -35,5 +35,17 @@ class PatientsViewModel @Inject constructor(
             }
         }
     }
+
+    fun deletePatient(id: Int, token: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.deletePatient(id, "Bearer $token")
+
+            } catch (e: Exception) {
+                // Handle exceptions that occurred during the deletion process
+            }
+        }
+    }
+
 
 }

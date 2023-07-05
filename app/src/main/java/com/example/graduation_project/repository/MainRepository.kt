@@ -50,4 +50,9 @@ class MainRepository @Inject constructor(
             token = token, createNewPatientRequest = createNewPatientRequest
         )
 
+    suspend fun deletePatient(
+        id: Int,
+        token: String
+    ) = apiService.deletePatient(token, id)
+
 }

@@ -20,7 +20,7 @@ interface ApiService {
 
     @POST("api/signup")
     suspend fun register(
-       @Body request: RegistrationRequest
+        @Body request: RegistrationRequest
     ): Response<RegistrationResponse>
 
 
@@ -33,7 +33,15 @@ interface ApiService {
     suspend fun createNewPatient(
         @Header("Authorization") token: String,
         @Body createNewPatientRequest: CreateNewPatientRequest
-    ):Response<CreateNewPatientResponse>
+    ): Response<CreateNewPatientResponse>
+
+
+    @DELETE("/api/patients/{id}/")
+    suspend fun deletePatient(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    )
+
 
     @GET("api/patient-history/{id}")
     suspend fun getPatientHistory(

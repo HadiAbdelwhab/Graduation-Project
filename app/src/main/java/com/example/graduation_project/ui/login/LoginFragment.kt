@@ -67,21 +67,17 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
 
         }
 
-        // Observe the login result
         loginViewModel.loginResult.observe(viewLifecycleOwner) { loginResponse ->
-            // Handle the login response
 
             if (loginResponse != null) {
 
                 val token = loginResponse.access
-                //saveTokenToSharedPreferences(token)
                 sessionManager.saveAuthToken(token)
 
-                Toast.makeText(context, "not null + $token", Toast.LENGTH_LONG).show()
                 navigateToPatientsListFragment()
 
             } else {
-                Toast.makeText(context, "JJJJJJ", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Server error", Toast.LENGTH_LONG).show()
             }
         }
     }

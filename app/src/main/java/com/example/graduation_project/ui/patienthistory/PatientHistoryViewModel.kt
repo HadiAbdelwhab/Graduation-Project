@@ -8,6 +8,7 @@ import com.example.graduation_project.models.patienthistorymodel.PatientHistory
 import com.example.graduation_project.models.patienthistorymodel.PatientHistoryResponse
 import com.example.graduation_project.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class PatientHistoryViewModel @Inject constructor(
 
 
     fun getPatientHistory(token: String, id: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.getPatientHistory(
                     token = "Bearer $token", id = id

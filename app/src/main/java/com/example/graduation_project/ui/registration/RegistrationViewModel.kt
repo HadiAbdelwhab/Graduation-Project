@@ -11,22 +11,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.example.graduation_project.models.registermodel.RegistrationRequest
+import kotlinx.coroutines.Dispatchers
 
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val repository: MainRepository
 ):ViewModel() {
-    val registerResult: MutableLiveData<RegistrationResponse> = MutableLiveData()
+    private val _registerResult:MutableLiveData<RegistrationResponse> = MutableLiveData()
+    val registerResult: MutableLiveData<RegistrationResponse> get() = _registerResult
 
     fun registerUser(registerRequest:RegistrationRequest) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.register(registerRequest)
                 if (response.code() == 201) {
                     val loginResponse = response.body()
                     if (loginResponse != null) {
-                        registerResult.postValue(loginResponse)
+                        _registerResult.postValue(loginResponse)
                     } else {
                     }
                 } else {

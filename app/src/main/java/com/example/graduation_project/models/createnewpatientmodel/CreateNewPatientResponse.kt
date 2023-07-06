@@ -1,4 +1,4 @@
-package com.example.graduation_project.models.loginmodel.createnewpatientmodel
+package com.example.graduation_project.models.createnewpatientmodel
 
 data class CreateNewPatientResponse (
     val id:Int,

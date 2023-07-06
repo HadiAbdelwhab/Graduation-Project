@@ -11,10 +11,12 @@ import com.example.graduation_project.R
 import com.example.graduation_project.models.patientsmodel.Patient
 
 class PatientsAdapter(
+    private var patientsList: List<Patient>
 ) : RecyclerView.Adapter<PatientsAdapter.PatientsViewHolder>() {
 
     interface OnPatientClickListener {
         fun onPatientClick(patientId: Int)
+
     }
 
     private var onPatientClickListener: OnPatientClickListener? = null
@@ -28,7 +30,7 @@ class PatientsAdapter(
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val patientId = diifer.currentList[position].id
+                    val patientId = patientsList[position].id
                     onPatientClickListener?.onPatientClick(patientId)
                 }
             }
@@ -55,33 +57,33 @@ class PatientsAdapter(
     }
 
     override fun onBindViewHolder(holder: PatientsViewHolder, position: Int) {
-        holder.bind(diifer.currentList[position])
+        holder.bind(patientsList[position])
     }
 
     override fun getItemCount(): Int {
-        return diifer.currentList.size
+        return patientsList.size
     }
 
     fun getPatientAt(position: Int): Patient {
-        return diifer.currentList[position]
+        return patientsList[position]
     }
 
     fun removePatientAt(position: Int) {
-        diifer.currentList.toMutableList().removeAt(position)
+        patientsList.toMutableList().removeAt(position)
         notifyItemRemoved(position)
     }
 
 
-    /*fun updateData(newPatientsList: List<Patient>) {
-        diifer.currentList = newPatientsList
+    fun updateData(newPatientsList: List<Patient>) {
+        patientsList = newPatientsList
         notifyDataSetChanged()
-    }*/
+    }
 
     fun setOnPatientClickListener(listener: OnPatientClickListener) {
         onPatientClickListener = listener
     }
 
-    private val differCallback = object : DiffUtil.ItemCallback<Patient>() {
+    /*private val differCallback = object : DiffUtil.ItemCallback<Patient>() {
         override fun areItemsTheSame(oldItem: Patient, newItem: Patient): Boolean {
             return oldItem.id == newItem.id
         }
@@ -90,6 +92,6 @@ class PatientsAdapter(
             return oldItem == newItem
         }
     }
-    val diifer = AsyncListDiffer(this, differCallback)
+    val diifer = AsyncListDiffer(this, differCallback)*/
 
 }

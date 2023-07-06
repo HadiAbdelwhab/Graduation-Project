@@ -14,6 +14,7 @@ import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
 import com.example.graduation_project.util.Constants.Companion.TOKEN_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +26,7 @@ class LoginViewModel @Inject constructor(
 
 
     fun loginUser(loginRequest: LoginRequest) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = userRepo.loginUser(loginRequest)
                 if (response.code() == 200) {

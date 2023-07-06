@@ -1,16 +1,18 @@
 package com.example.graduation_project.repository
 
 import com.example.graduation_project.api.ApiService
-import com.example.graduation_project.models.loginmodel.createnewpatientmodel.CreateNewPatientRequest
-import com.example.graduation_project.models.loginmodel.createnewpatientmodel.CreateNewPatientResponse
+import com.example.graduation_project.models.creditsmodel.CreditsResponse
+import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientRequest
+import com.example.graduation_project.models.createnewpatientmodel.CreateNewPatientResponse
+import com.example.graduation_project.models.createnewscanmodel.CreateNewScanRequest
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.models.loginmodel.LoginResponse
-import com.example.graduation_project.models.patienthistorymodel.PatientHistory
 import com.example.graduation_project.models.patienthistorymodel.PatientHistoryResponse
 import com.example.graduation_project.models.patientsmodel.PatientResponse
 import com.example.graduation_project.models.registermodel.RegistrationRequest
 import com.example.graduation_project.models.registermodel.RegistrationResponse
 import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
@@ -55,4 +57,15 @@ class MainRepository @Inject constructor(
         token: String
     ) = apiService.deletePatient(token, id)
 
+    suspend fun getCredits(
+        token: String
+    ): Response<CreditsResponse> =
+        apiService.getCredits(token)
+
+
+    suspend fun createNewScan(
+        token: String,
+        imageFile:File,
+        createNewScanRequest: CreateNewScanRequest
+    ) = apiService.createNewScan(token,imageFile,createNewScanRequest)
 }

@@ -39,6 +39,15 @@
             android:textSize="20sp"
 
             />
+        <TextView
+            android:id="@+id/text_view_created_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Created at"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+
+            />
 
     </LinearLayout>
 

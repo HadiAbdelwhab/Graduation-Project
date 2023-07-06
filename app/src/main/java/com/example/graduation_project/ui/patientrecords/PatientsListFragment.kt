@@ -17,8 +17,8 @@ import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
+import com.example.graduation_project.util.Constants.Companion.CREDITS
 import com.example.graduation_project.util.Constants.Companion.PATIENT_ID
-import com.google.android.material.snackbar.Snackbar
 
 class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     PatientsAdapter.OnPatientClickListener {
@@ -44,6 +44,7 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
 
         patientsViewModel = (activity as MainActivity).patientsViewModel
 
+
         setUpRecyclerView()
 
         patientsAdapter.setOnPatientClickListener(this)
@@ -56,22 +57,34 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         }
 
 
-
+        patientsViewModel.creditLiveData.observe(viewLifecycleOwner, Observer {
+            val credits = it.credits
+            //binding.creditsTextView.text = "Credits:$credits"
+        })
 
 
         patientsViewModel.getPatientsList.observe(viewLifecycleOwner, Observer { patients ->
-            patients?.let {
-
-                patientsAdapter.diifer.submitList(it)
+            patients?.let {list->
+                patientsAdapter.updateData(list)
+                if (list.isEmpty()) {
+                    hideRecyclerView()
+                }else{
+                   showRecyclerView()
+                }
 
             }
         })
+
+        binding.addNewPatientButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_createNewPatientDialog)
+        }
 
 
     }
 
     private fun setUpRecyclerView() {
-        patientsAdapter = PatientsAdapter()
+        patientsAdapter = PatientsAdapter(emptyList())
         binding.patientsListRecyclerView.apply {
             adapter = patientsAdapter
             layoutManager = LinearLayoutManager(activity)
@@ -93,7 +106,7 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         )
     }
 
-    private fun setupSwipe(toke: String) {
+    private fun setupSwipe(token: String) {
         val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -105,8 +118,12 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val swipedPatientPosition = viewHolder.adapterPosition
-                val swipedPatient = patientsAdapter.diifer.currentList[swipedPatientPosition]
-                patientsViewModel.deletePatient(swipedPatient.id, toke)
+                val swipedPatient = patientsAdapter.getPatientAt(swipedPatientPosition)
+                patientsViewModel.deletePatient(swipedPatient.id, token)
+                patientsAdapter.removePatientAt(swipedPatientPosition)
+                patientsAdapter.notifyItemRemoved(swipedPatientPosition)
+
+
                 Toast.makeText(context, "Patient deleted!", Toast.LENGTH_SHORT).show()
 
             }
@@ -130,5 +147,15 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
 
         navigateToPatientsHistoryFragment(patientId)
         Log.d("PatientsListFragment", patientId.toString())
+    }
+    private fun showRecyclerView() {
+        binding.patientsListRecyclerView.visibility = View.VISIBLE
+        binding.noPatientsTextView.visibility = View.GONE
+
+    }
+
+    private fun hideRecyclerView() {
+        binding.patientsListRecyclerView.visibility = View.GONE
+        binding.noPatientsTextView.visibility = View.VISIBLE
     }
 }

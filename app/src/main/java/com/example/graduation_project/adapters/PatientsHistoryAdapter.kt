@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.graduation_project.R
@@ -12,7 +14,7 @@ import com.example.graduation_project.models.patienthistorymodel.PatientHistory
 import com.example.graduation_project.models.patientsmodel.Patient
 
 class PatientsHistoryAdapter(
-    private var patientsHistory: List<PatientHistory>
+
 ) : RecyclerView.Adapter<PatientsHistoryAdapter.PatientHistoryViewHolder>() {
     inner class PatientHistoryViewHolder(item: View):RecyclerView.ViewHolder(item) {
 
@@ -34,6 +36,17 @@ class PatientsHistoryAdapter(
 
 
     }
+    private val differCallback = object : DiffUtil.ItemCallback<PatientHistory>() {
+        override fun areItemsTheSame(oldItem: PatientHistory, newItem: PatientHistory): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: PatientHistory, newItem: PatientHistory): Boolean {
+            return oldItem == newItem
+        }
+    }
+    val diifer = AsyncListDiffer(this, differCallback)
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -45,16 +58,13 @@ class PatientsHistoryAdapter(
     }
 
     override fun getItemCount(): Int {
-        return patientsHistory.size
+        return diifer.currentList.size
     }
 
     override fun onBindViewHolder(holder: PatientHistoryViewHolder, position: Int) {
-        holder.bind(patientsHistory[position])
+        holder.bind(diifer.currentList[position])
     }
-    fun updateData(newPatientsHistoryList: List<PatientHistory>) {
-        patientsHistory = newPatientsHistoryList
-        notifyDataSetChanged()
-    }
+
 
 
 

@@ -3,18 +3,22 @@ package com.example.graduation_project.ui.login
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.graduation_project.R
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentLogInBinding
 import com.example.graduation_project.models.loginmodel.LoginRequest
 import com.example.graduation_project.ui.MainActivity
+import com.example.graduation_project.util.Constants.Companion.CREDITS
 import com.example.graduation_project.util.Constants.Companion.SHA_PRF_KEY
+
 
 
 
@@ -72,9 +76,10 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
             if (loginResponse != null) {
 
                 val token = loginResponse.access
+                val credits=loginResponse.credits
                 sessionManager.saveAuthToken(token)
 
-                navigateToPatientsListFragment()
+                navigateToPatientsListFragment(credits)
 
             } else {
                 Toast.makeText(context, "Server error", Toast.LENGTH_LONG).show()
@@ -84,9 +89,18 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
 
 
 
-    private fun navigateToPatientsListFragment() {
-        val navController = Navigation.findNavController(requireView())
-        navController.navigate(R.id.action_loginFragment_to_dashboardFragment)
+    private fun navigateToPatientsListFragment(credits: Int?) {
+        val bundle = Bundle().apply {
+            if (credits != null) {
+                putInt(CREDITS, credits)
+                Log.d("LoginFragment", credits.toString())
+            }
+        }
+        findNavController().navigate(
+            R.id.action_loginFragment_to_dashboardFragment,
+            bundle
+        )
     }
+
 }
 

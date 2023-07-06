@@ -31,25 +31,43 @@
 
 
     <fragment
-            android:id="@+id/dashboardFragment"
+        android:id="@+id/dashboardFragment"
         android:name="com.example.graduation_project.ui.patientrecords.PatientsListFragment"
         android:label="DashboardFragment"
-        tools:layout="@layout/fragment_patients_list" >
+        tools:layout="@layout/fragment_patients_list">
         <action
             android:id="@+id/action_dashboardFragment_to_patientHistoryFragment"
             app:destination="@id/patientHistoryFragment" />
+        <argument
+            android:name="credits"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_createNewPatientDialog"
+            app:destination="@id/createNewPatientDialog" />
     </fragment>
     <fragment
         android:id="@+id/patientHistoryFragment"
         android:name="com.example.graduation_project.ui.patienthistory.PatientHistoryFragment"
         android:label="PatientHistoryFragment"
-        tools:layout="@layout/fragment_patient_history" >
+        tools:layout="@layout/fragment_patient_history">
         <argument
             android:name="id"
-            app:argType="integer"
             android:defaultValue="0"
-            />
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_patientHistoryFragment_to_createNewScanDialog"
+            app:destination="@id/createNewScanDialog" />
     </fragment>
+    <dialog
+        android:id="@+id/createNewPatientDialog"
+        android:name="com.example.graduation_project.ui.createnewpatient.CreateNewPatientDialog"
+        android:label="CreateNewPatientDialog"
+        tools:layout="@layout/dialog_create_new_patient" />
+    <dialog
+        android:id="@+id/createNewScanDialog"
+        android:name="com.example.graduation_project.ui.createnewscan.CreateNewScanDialog"
+        android:label="CreateNewScanDialog"
+        tools:layout="@layout/dialog_create_new_scan"/>
 
 
 </navigation>

@@ -1,7 +1,6 @@
 package com.example.graduation_project.ui.createnewpatient
 
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle

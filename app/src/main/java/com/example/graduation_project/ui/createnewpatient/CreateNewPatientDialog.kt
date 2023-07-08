@@ -110,7 +110,7 @@ class CreateNewPatientDialog : DialogFragment(R.layout.dialog_create_new_patient
         val dateOfBirth = binding.dateTextView.text.toString()
         val gender: Int? = when (binding.genderRadioGroup.checkedRadioButtonId) {
             R.id.male_radio_button -> 1
-            R.id.female_radio_button -> 0
+            R.id.female_radio_button -> 2
             else -> null
         }
         // Gather other relevant fields as needed

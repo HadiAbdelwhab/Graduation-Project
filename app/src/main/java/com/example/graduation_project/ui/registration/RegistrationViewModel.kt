@@ -1,5 +1,6 @@
 package com.example.graduation_project.ui.registration
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,20 +18,18 @@ import kotlinx.coroutines.Dispatchers
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val repository: MainRepository
-):ViewModel() {
-    private val _registerResult:MutableLiveData<RegistrationResponse> = MutableLiveData()
+) : ViewModel() {
+    private val _registerResult: MutableLiveData<RegistrationResponse> = MutableLiveData()
     val registerResult: MutableLiveData<RegistrationResponse> get() = _registerResult
 
-    fun registerUser(registerRequest:RegistrationRequest) {
+    fun registerUser(registerRequest: RegistrationRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.register(registerRequest)
+                Log.d("RegistrationViewModel", response.code().toString())
                 if (response.code() == 201) {
-                    val loginResponse = response.body()
-                    if (loginResponse != null) {
-                        _registerResult.postValue(loginResponse)
-                    } else {
-                    }
+                    val registerResponse = response.body()
+                    _registerResult.postValue(registerResponse)
                 } else {
                     // Handle login failure
                 }

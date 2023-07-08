@@ -1,6 +1,7 @@
 package com.example.graduation_project.ui.registration
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,43 +44,44 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
             val firstName = binding.firstNameEditText.text.toString()
             val lastName = binding.lastNameEditText.text.toString()
             val username = binding.registerUsernameEditText.text.toString()
-            val email = binding.emailTextView.text.toString()
-            val password = binding.registerPasswordEditText.toString()
-            val confirmPassword = binding.confirmPasswordEditText.toString()
+            val email = binding.registerEmailEditText.text.toString()
+            val password = binding.registerPasswordEditText.text.toString()
+            val confirmPassword = binding.confirmPasswordEditText.text.toString()
             val registrationRequest = RegistrationRequest(
-                username = username,
-                email = email,
-                password1 = password,
-                password2 = confirmPassword,
-                first_name = firstName,
-                last_name = lastName
+
+                username,
+                email,
+                firstName,
+                lastName,
+                password,
+                confirmPassword
 
             )
+            Log.d("RegistrationFragment",registrationRequest.toString())
 
             registrationViewModel.registerUser(registrationRequest)
 
 
         }
 
-        registrationViewModel.registerResult.observe(viewLifecycleOwner) { registerionResponse ->
+        registrationViewModel.registerResult.observe(viewLifecycleOwner) { registrationResponse ->
             // Handle the login response
 
-            if (registerionResponse != null) {
+            if (registrationResponse != null) {
 
 
                 Toast.makeText(context, "Registration Succeeded ", Toast.LENGTH_LONG).show()
                 navigateToLoginFragment()
 
+
             } else {
-                Toast.makeText(context, "JJJJJJ", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Registration Failed", Toast.LENGTH_LONG).show()
             }
         }
 
 
-
-
-
     }
+
     private fun navigateToLoginFragment() {
         val navController = Navigation.findNavController(requireView())
         navController.navigate(R.id.action_registrationFragment_to_loginFragment)

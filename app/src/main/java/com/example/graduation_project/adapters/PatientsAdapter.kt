@@ -93,5 +93,8 @@ class PatientsAdapter(
         }
     }
     val diifer = AsyncListDiffer(this, differCallback)*/
-
+    fun addPatient(patient: Patient) {
+        patientsList += patient
+        notifyDataSetChanged()
+    }
 }

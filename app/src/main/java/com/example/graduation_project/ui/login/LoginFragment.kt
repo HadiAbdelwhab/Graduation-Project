@@ -59,15 +59,13 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
         }
 
         loginViewModel=(activity as MainActivity).loginViewModel
-        sharedPreferences =
-            requireActivity().getSharedPreferences(SHA_PRF_KEY, Context.MODE_PRIVATE)
 
         binding.loginButton.setOnClickListener {
             val userName = binding.loginUsernameEditText.text.toString()
             val password = binding.loginPasswordEditText.text.toString()
             val loginRequest = LoginRequest(userName, password)
             loginViewModel.loginUser(loginRequest)
-            Toast.makeText(context, "clicked", Toast.LENGTH_LONG).show()
+
 
         }
 
@@ -78,9 +76,8 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
                 val token = loginResponse.access
                 val credits=loginResponse.credits
                 sessionManager.saveAuthToken(token)
-
                 navigateToPatientsListFragment(credits)
-
+                Toast.makeText(context,"Logged In successfully",Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Server error", Toast.LENGTH_LONG).show()
             }

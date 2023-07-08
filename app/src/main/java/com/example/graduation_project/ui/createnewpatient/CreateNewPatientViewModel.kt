@@ -15,7 +15,8 @@ class CreateNewPatientViewModel @Inject constructor(
 ):ViewModel() {
 
 
-    val createNewPatientResult:MutableLiveData<CreateNewPatientResponse> = MutableLiveData()
+    private val _createNewPatientResult : MutableLiveData<CreateNewPatientResponse> = MutableLiveData()
+    val createNewPatientResult:MutableLiveData<CreateNewPatientResponse>get() = _createNewPatientResult
 
 
     fun createNewPatient(createNewPatientRequest: CreateNewPatientRequest, token:String){
@@ -26,7 +27,7 @@ class CreateNewPatientViewModel @Inject constructor(
                 if (response.code()==201){
                     val createNewPatientResponse=response.body()
                     if (createNewPatientResponse!=null){
-                        createNewPatientResult.postValue(createNewPatientResponse)
+                        _createNewPatientResult.postValue(createNewPatientResponse)
                     }
                 }
 

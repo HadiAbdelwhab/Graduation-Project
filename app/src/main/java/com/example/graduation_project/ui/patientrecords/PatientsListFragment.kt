@@ -17,8 +17,10 @@ import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsAdapter
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientsListBinding
-import com.example.graduation_project.util.Constants.Companion.CREDITS
+import com.example.graduation_project.models.patientsmodel.Patient
+import com.example.graduation_project.ui.createnewpatient.CreateNewPatientViewModel
 import com.example.graduation_project.util.Constants.Companion.PATIENT_ID
+import java.util.*
 
 class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     PatientsAdapter.OnPatientClickListener {
@@ -28,6 +30,7 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
     lateinit var patientsViewModel: PatientsViewModel
     private lateinit var patientsAdapter: PatientsAdapter
     private lateinit var sessionManager: SessionManager
+    private lateinit var createNewPatientViewModel: CreateNewPatientViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +47,21 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
 
         patientsViewModel = (activity as MainActivity).patientsViewModel
 
+        createNewPatientViewModel = (activity as MainActivity).createNewPatientViewModel
 
+        createNewPatientViewModel.createNewPatientResult.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                val patient = Patient(
+                    response.date,
+                    currentDate(),
+                    response.firstName,
+                    response.gender,
+                    response.id,
+                    response.lastName
+                )
+                patientsAdapter.addPatient(patient)
+            })
         setUpRecyclerView()
 
         patientsAdapter.setOnPatientClickListener(this)
@@ -57,27 +74,31 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         }
 
 
-        patientsViewModel.creditLiveData.observe(viewLifecycleOwner, Observer {
-            val credits = it.credits
-            //binding.creditsTextView.text = "Credits:$credits"
-        })
 
 
         patientsViewModel.getPatientsList.observe(viewLifecycleOwner, Observer { patients ->
-            patients?.let {list->
+            patients?.let { list ->
                 patientsAdapter.updateData(list)
                 if (list.isEmpty()) {
                     hideRecyclerView()
-                }else{
-                   showRecyclerView()
+                } else {
+                    showRecyclerView()
                 }
 
             }
         })
 
+        binding.logOutImageView.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_dashboardFragment_to_loginFragment
+            )
+            Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
+        }
+
         binding.addNewPatientButton.setOnClickListener {
             findNavController().navigate(
-                R.id.action_dashboardFragment_to_createNewPatientDialog)
+                R.id.action_dashboardFragment_to_createNewPatientDialog
+            )
         }
 
 
@@ -148,6 +169,7 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         navigateToPatientsHistoryFragment(patientId)
         Log.d("PatientsListFragment", patientId.toString())
     }
+
     private fun showRecyclerView() {
         binding.patientsListRecyclerView.visibility = View.VISIBLE
         binding.noPatientsTextView.visibility = View.GONE
@@ -158,4 +180,18 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
         binding.patientsListRecyclerView.visibility = View.GONE
         binding.noPatientsTextView.visibility = View.VISIBLE
     }
+
+    private fun currentDate(): String {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        return "${year.toString()}-${month.toString()}-${day.toString()}"
+    }
+
+
 }
+
+
+

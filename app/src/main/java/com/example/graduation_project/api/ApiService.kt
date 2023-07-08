@@ -60,7 +60,6 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<CreditsResponse>
 
-
     @Multipart
     @POST("api/scans/")
     suspend fun createNewScan(

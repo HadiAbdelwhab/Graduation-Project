@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,27 +52,23 @@ class CreateNewPatientDialog : DialogFragment(R.layout.dialog_create_new_patient
         createNewPatientViewModel = (activity as MainActivity).createNewPatientViewModel
 
 
-
-
-
-
-
-
         binding.pickDateButton.setOnClickListener {
             showDatePicker()
         }
-        val token = sessionManager.fetchAuthToken()
+
 
         binding.saveButton.setOnClickListener {
 
 
             val token = sessionManager.fetchAuthToken()
             val patientData = gatherPatientDataFromInputFields()
+            Log.d("CreateNewPatientDialog","token: $token data:${patientData}")
             if (token != null) {
                 createNewPatientViewModel.createNewPatient(
                     token = token,
                     createNewPatientRequest = patientData
                 )
+
             }
             dismiss()
         }

@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_createNewPatientDialog"
             app:destination="@id/createNewPatientDialog" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/patientHistoryFragment"

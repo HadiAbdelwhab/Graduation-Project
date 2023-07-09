@@ -13,7 +13,9 @@ import com.example.graduation_project.R
 import com.example.graduation_project.adapters.PatientsHistoryAdapter
 import com.example.graduation_project.api.SessionManager
 import com.example.graduation_project.databinding.FragmentPatientHistoryBinding
+import com.example.graduation_project.models.patienthistorymodel.PatientHistory
 import com.example.graduation_project.ui.MainActivity
+import com.example.graduation_project.ui.createnewscan.CreateNewScanViewModel
 import com.example.graduation_project.util.Constants.Companion.PATIENT_ID
 
 class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
@@ -24,7 +26,7 @@ class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
     private lateinit var patientHistoryViewModel: PatientHistoryViewModel
     private lateinit var patientHistoryAdapter: PatientsHistoryAdapter
     private lateinit var sessionManager: SessionManager
-
+    private lateinit var createNewScanViewModel: CreateNewScanViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,10 +44,31 @@ class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
 
         patientHistoryViewModel = (activity as MainActivity).patientHistoryViewModel
 
+        createNewScanViewModel = (activity as MainActivity).createNewScanViewModel
+
         sessionManager = SessionManager((requireContext()))
-
-
         val id = requireArguments().getInt(PATIENT_ID)
+        createNewScanViewModel.createNewScanResult.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+
+                val patientHistory = PatientHistory(
+                    response.eye,
+                    response.id,
+                    response.image,
+                    response.mask,
+                    response.notes,
+                    response.patient,
+                    response.ratio,
+                    response.result
+
+
+                )
+                patientHistoryAdapter.addHistoryItem(patientHistory)
+
+            })
+
+
         val token = sessionManager.fetchAuthToken()
 
         if (token != null) {
@@ -56,11 +79,11 @@ class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
         Log.d("PatientHistoryFragment", "$id token =$token")
 
 
-        patientHistoryViewModel.patientHistoryResult.observe(viewLifecycleOwner, Observer {
+        patientHistoryViewModel.patientHistoryResult.observe(viewLifecycleOwner, Observer { list ->
 
-            patientHistoryAdapter.diifer.submitList(it)
-            Log.d("PatientHistoryFragment", it.toString())
-            if (patientHistoryAdapter.diifer.currentList.isEmpty()) {
+            patientHistoryAdapter.updateData(list)
+            Log.d("PatientHistoryFragment", list.toString())
+            if (list.isEmpty()) {
                 hideRecyclerView()
             } else {
                 showRecyclerView()
@@ -69,6 +92,7 @@ class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
         })
 
         binding.addNewScanButton.setOnClickListener {
+
             findNavController().navigate(
                 R.id.action_patientHistoryFragment_to_createNewScanDialog
             )
@@ -77,7 +101,7 @@ class PatientHistoryFragment : Fragment(R.layout.fragment_patient_history) {
     }
 
     private fun setUpRecyclerView() {
-        patientHistoryAdapter = PatientsHistoryAdapter()
+        patientHistoryAdapter = PatientsHistoryAdapter(emptyList())
         binding.patientHistoryRecyclerView.apply {
             adapter = patientHistoryAdapter
             layoutManager = LinearLayoutManager(activity)

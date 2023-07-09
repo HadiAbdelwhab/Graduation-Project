@@ -122,7 +122,7 @@ class PatientsListFragment : Fragment(R.layout.fragment_patients_list),
             }
         }
         findNavController().navigate(
-            R.id.action_dashboardFragment_to_patientHistoryFragment,
+            R.id.action_patientListFragment_to_patientHistoryFragment,
             bundle
         )
     }

@@ -66,7 +66,6 @@ class LoginFragment : Fragment(R.layout.fragment_log_in) {
             val loginRequest = LoginRequest(userName, password)
             loginViewModel.loginUser(loginRequest)
 
-
         }
 
         loginViewModel.loginResult.observe(viewLifecycleOwner) { loginResponse ->

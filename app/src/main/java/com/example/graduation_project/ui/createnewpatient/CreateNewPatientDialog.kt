@@ -39,7 +39,6 @@ class CreateNewPatientDialog : DialogFragment(R.layout.dialog_create_new_patient
         super.onStart()
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
-        val height = (resources.displayMetrics.heightPixels * 0.85).toInt()
         dialog!!.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
@@ -75,10 +74,7 @@ class CreateNewPatientDialog : DialogFragment(R.layout.dialog_create_new_patient
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
@@ -114,6 +110,11 @@ class CreateNewPatientDialog : DialogFragment(R.layout.dialog_create_new_patient
         }
         // Gather other relevant fields as needed
         return CreateNewPatientRequest(firstName, lastName, gender!!, dateOfBirth)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 

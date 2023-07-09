@@ -5,8 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.graduation_project.R
@@ -14,7 +12,7 @@ import com.example.graduation_project.models.patienthistorymodel.PatientHistory
 import com.example.graduation_project.models.patientsmodel.Patient
 
 class PatientsHistoryAdapter(
-
+        private var patientHistoryList: List<PatientHistory>
 ) : RecyclerView.Adapter<PatientsHistoryAdapter.PatientHistoryViewHolder>() {
     inner class PatientHistoryViewHolder(item: View):RecyclerView.ViewHolder(item) {
 
@@ -36,7 +34,7 @@ class PatientsHistoryAdapter(
 
 
     }
-    private val differCallback = object : DiffUtil.ItemCallback<PatientHistory>() {
+    /*private val differCallback = object : DiffUtil.ItemCallback<PatientHistory>() {
         override fun areItemsTheSame(oldItem: PatientHistory, newItem: PatientHistory): Boolean {
             return oldItem.id == newItem.id
         }
@@ -45,7 +43,7 @@ class PatientsHistoryAdapter(
             return oldItem == newItem
         }
     }
-    val diifer = AsyncListDiffer(this, differCallback)
+    val diifer = AsyncListDiffer(this, differCallback)*/
 
 
     override fun onCreateViewHolder(
@@ -58,11 +56,20 @@ class PatientsHistoryAdapter(
     }
 
     override fun getItemCount(): Int {
-        return diifer.currentList.size
+        return patientHistoryList.size
     }
 
     override fun onBindViewHolder(holder: PatientHistoryViewHolder, position: Int) {
-        holder.bind(diifer.currentList[position])
+        holder.bind(patientHistoryList[position])
+    }
+
+    fun updateData(newHistoryPatientList: List<PatientHistory>) {
+        patientHistoryList = newHistoryPatientList
+        notifyDataSetChanged()
+    }
+    fun addHistoryItem(patientHistory: PatientHistory) {
+        patientHistoryList += patientHistory
+        notifyDataSetChanged()
     }
 
 

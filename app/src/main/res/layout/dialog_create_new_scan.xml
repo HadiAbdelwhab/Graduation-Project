@@ -51,7 +51,7 @@
 
             <RadioButton
 
-                android:id="@+id/right_radio_button"
+                android:id="@+id/right_eye_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -62,7 +62,7 @@
 
             <RadioButton
 
-                android:id="@+id/left_radio_button"
+                android:id="@+id/left_eye_radio_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

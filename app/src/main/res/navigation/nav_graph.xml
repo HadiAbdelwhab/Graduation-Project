@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_log_in">
         <action
             android:id="@+id/action_loginFragment_to_dashboardFragment"
-            app:destination="@+id/dashboardFragment" />
+            app:destination="@+id/patientListFragment" />
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
@@ -31,12 +31,12 @@
 
 
     <fragment
-        android:id="@+id/dashboardFragment"
+        android:id="@+id/patientListFragment"
         android:name="com.example.graduation_project.ui.patientrecords.PatientsListFragment"
         android:label="DashboardFragment"
         tools:layout="@layout/fragment_patients_list">
         <action
-            android:id="@+id/action_dashboardFragment_to_patientHistoryFragment"
+            android:id="@+id/action_patientListFragment_to_patientHistoryFragment"
             app:destination="@id/patientHistoryFragment" />
         <argument
             android:name="credits"
@@ -70,7 +70,11 @@
         android:id="@+id/createNewScanDialog"
         android:name="com.example.graduation_project.ui.createnewscan.CreateNewScanDialog"
         android:label="CreateNewScanDialog"
-        tools:layout="@layout/dialog_create_new_scan"/>
+        tools:layout="@layout/dialog_create_new_scan">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </dialog>
 
 
 </navigation>

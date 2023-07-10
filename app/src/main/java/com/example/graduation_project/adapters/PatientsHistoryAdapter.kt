@@ -51,7 +51,7 @@ class PatientsHistoryAdapter(
         viewType: Int
     ): PatientHistoryViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_patient, parent, false)
+            .inflate(R.layout.item_patient_history, parent, false)
         return PatientHistoryViewHolder(itemView)
     }
 
